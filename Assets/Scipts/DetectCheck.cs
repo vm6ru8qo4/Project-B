@@ -5,6 +5,7 @@ using UnityEngine;
 public class DetectCheck : MonoBehaviour
 {
     SpriteRenderer m_TargetRenderer;
+    //public event EscapeMessageEvent OnMessageAdded = (m) => {};
     // Start is called before the first frame update
     void Start()
     {
