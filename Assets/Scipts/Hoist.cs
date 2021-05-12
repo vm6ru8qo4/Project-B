@@ -6,7 +6,8 @@ public class Hoist : MonoBehaviour
 {
     //hook control
     public float m_Velocity = 2f;
-    const float Attach_Distance=3f;
+    const float Attach_Distance=0.5f;
+    const float Linear_Distance=0.1f;
     GameObject m_Detected;
     ConfigurableJoint m_Joint;
     [SerializeField] GameObject m_JointBody;
@@ -96,8 +97,9 @@ public class Hoist : MonoBehaviour
             //try to find something new
             Recover();
             //MeshRenderer r = hit.collider.GetComponent<MeshRenderer>();
+            Rigidbody rb = may.GetComponent<Rigidbody>();
             MeshRenderer r = may.GetComponent<MeshRenderer>();
-            if (r != null)
+            if (r != null && rb!=null)
             {//detect something new
                 r.material.color = Color.yellow;
                 m_Detected = may;
@@ -127,14 +129,22 @@ public class Hoist : MonoBehaviour
                 joint.xMotion = ConfigurableJointMotion.Limited;
                 joint.yMotion = ConfigurableJointMotion.Limited;
                 joint.zMotion = ConfigurableJointMotion.Limited;
-                joint.angularXMotion = ConfigurableJointMotion.Free;
-                joint.angularYMotion = ConfigurableJointMotion.Free;
-                joint.angularZMotion = ConfigurableJointMotion.Free;
+                joint.angularXMotion = ConfigurableJointMotion.Limited;
+                joint.angularYMotion = ConfigurableJointMotion.Limited;
+                joint.angularZMotion = ConfigurableJointMotion.Limited;
                 //???講義上的limit code像繞口令迴圈
                 var ll = joint.linearLimit;
-                ll.limit = 4;
+                ll.limit = Linear_Distance;
                 joint.linearLimit=ll;
-                //???
+                var ayl = joint.angularYLimit;
+                ayl.limit = 30f;
+                joint.angularYLimit = ayl;
+                var azl = joint.angularZLimit;
+                azl.limit = 30f;
+                joint.angularZLimit = azl;
+                ///
+                //joint.connectedMassScale = 10;
+                ///
                 joint.autoConfigureConnectedAnchor = false;
                 joint.connectedAnchor = new Vector3(0f, 0.5f, 0f);
                 joint.anchor = new Vector3(0f, 0f, 0f);

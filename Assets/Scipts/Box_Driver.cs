@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Box_Driver : MonoBehaviour
 {
-    const float INCREMENT = 0.1f;
+    const float INCREMENT = 5f;
     const float HEIGHT = 14f;
     [SerializeField] GameObject Arm;
     [SerializeField] ConfigurableJoint lift;
@@ -19,30 +19,30 @@ public class Box_Driver : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            this.transform.Translate(new Vector3(0, 0, INCREMENT));
+            this.transform.Translate(new Vector3(0, 0, INCREMENT*Time.deltaTime));
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            this.transform.Translate(new Vector3(0, 0, -INCREMENT));
+            this.transform.Translate(new Vector3(0, 0, -INCREMENT * Time.deltaTime));
         }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            Arm.transform.Rotate(new Vector3(0, -INCREMENT, 0));
+            Arm.transform.Rotate(new Vector3(0, -INCREMENT * Time.deltaTime, 0));
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            Arm.transform.Rotate(new Vector3(0, INCREMENT, 0));
+            Arm.transform.Rotate(new Vector3(0, INCREMENT * Time.deltaTime, 0));
         }
         if (Input.GetKey(KeyCode.R))
         {
             var ll = lift.linearLimit;
-            ll.limit = Mathf.Clamp(ll.limit - INCREMENT, 1, HEIGHT);
+            ll.limit = Mathf.Clamp(ll.limit - INCREMENT * Time.deltaTime, 1, HEIGHT);
             lift.linearLimit = ll;
         }
         if (Input.GetKey(KeyCode.F))
         {
             var ll = lift.linearLimit;
-            ll.limit = Mathf.Clamp(ll.limit + INCREMENT, 0, HEIGHT);
+            ll.limit = Mathf.Clamp(ll.limit + INCREMENT * Time.deltaTime, 0, HEIGHT);
             lift.linearLimit = ll;
         }
     }
